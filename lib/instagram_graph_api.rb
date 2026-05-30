@@ -14,9 +14,10 @@ module InstagramGraphAPI
   end
 
   def self.method_missing(method, *args, &block)
-    return super unless client.respond_to?(method)
+    c = client
+    return super unless c.respond_to?(method)
 
-    client.send(method, *args, &block)
+    c.public_send(method, *args, &block)
   end
 
   def self.respond_to_missing?(method, include_private = false)

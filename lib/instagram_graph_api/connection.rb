@@ -8,18 +8,16 @@ module InstagramGraphAPI
     private
 
     def connection
-      options = {
+      @connection ||= Faraday.new(
+        url: api_url,
         headers: {
           'Accept'     => 'application/json',
           'User-Agent' => user_agent
-        },
-        url: api_url
-      }
-
-      Faraday.new(options) do |conn|
+        }
+      ) do |conn|
         conn.request :url_encoded
         conn.response :raise_http_exception
-        conn.response :json, content_type: /\bjson$/
+        conn.response :json
         conn.adapter Faraday.default_adapter
       end
     end

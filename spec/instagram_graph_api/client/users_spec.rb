@@ -44,8 +44,12 @@ RSpec.describe InstagramGraphAPI::Client::Users do
       400 => InstagramGraphAPI::BadRequest,
       401 => InstagramGraphAPI::Unauthorized,
       403 => InstagramGraphAPI::Forbidden,
+      404 => InstagramGraphAPI::NotFound,
       429 => InstagramGraphAPI::TooManyRequests,
-      500 => InstagramGraphAPI::InternalServerError
+      500 => InstagramGraphAPI::InternalServerError,
+      502 => InstagramGraphAPI::BadGateway,
+      503 => InstagramGraphAPI::ServiceUnavailable,
+      504 => InstagramGraphAPI::GatewayTimeout
     }.each do |status, error_class|
       it "raises #{error_class} on HTTP #{status}" do
         stub_graph_get('me', response_fixture: "errors/#{status}.json", status: status)

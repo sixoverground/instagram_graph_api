@@ -5,13 +5,11 @@ module InstagramGraphAPI
     VALID_OPTIONS_KEYS = %i[
       access_token
       api_url
-      api_version
       user_agent
     ].freeze
 
     DEFAULT_ACCESS_TOKEN = nil
     DEFAULT_API_URL      = 'https://graph.instagram.com'
-    DEFAULT_API_VERSION  = 'v23.0'
     DEFAULT_USER_AGENT   = "InstagramGraphAPI Ruby Gem #{InstagramGraphAPI::VERSION}"
 
     attr_accessor(*VALID_OPTIONS_KEYS)
@@ -32,7 +30,6 @@ module InstagramGraphAPI
     def reset
       self.access_token = DEFAULT_ACCESS_TOKEN
       self.api_url      = DEFAULT_API_URL
-      self.api_version  = DEFAULT_API_VERSION
       self.user_agent   = DEFAULT_USER_AGENT
       self
     end

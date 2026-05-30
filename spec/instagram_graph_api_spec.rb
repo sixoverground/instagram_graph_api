@@ -33,5 +33,10 @@ RSpec.describe InstagramGraphAPI do
       InstagramGraphAPI.reset
       expect(InstagramGraphAPI.access_token).to be_nil
     end
+
+    it 'exposes only the keys it actually uses' do
+      expect(InstagramGraphAPI::Configuration::VALID_OPTIONS_KEYS)
+        .to contain_exactly(:access_token, :api_url, :user_agent)
+    end
   end
 end

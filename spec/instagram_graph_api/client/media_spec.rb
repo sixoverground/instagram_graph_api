@@ -51,7 +51,7 @@ RSpec.describe InstagramGraphAPI::Client::Media do
     end
 
     it 'raises NotFound on 404' do
-      stub_graph_get('bogus_id', response_fixture: 'errors/400.json', status: 404)
+      stub_graph_get('bogus_id', response_fixture: 'errors/404.json', status: 404)
       expect { client.media_item('bogus_id') }.to raise_error(InstagramGraphAPI::NotFound)
     end
   end
