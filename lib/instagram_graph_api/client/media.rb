@@ -20,7 +20,7 @@ module InstagramGraphAPI
         get('me/media', fields: fields, limit: limit, after: after)
       end
 
-      # Alias matching the planned API table (used by future phase 5a).
+      # Alias for `user_recent_media`.
       def recent_media(limit: 25, after: nil, fields: DEFAULT_MEDIA_FIELDS)
         user_recent_media(limit: limit, after: after, fields: fields)
       end
@@ -30,7 +30,7 @@ module InstagramGraphAPI
         get(id.to_s, fields: fields)
       end
 
-      # Alias matching the planned API table.
+      # Keyword-`id:` alias.
       def media(id:, fields: DEFAULT_MEDIA_FIELDS)
         media_item(id, fields: fields)
       end
