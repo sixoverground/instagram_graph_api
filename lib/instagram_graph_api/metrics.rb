@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 module InstagramGraphAPI
-  # Whitelist of insight metric names the Instagram Graph API (v21+) returns
-  # for each media kind. Deprecated names (impressions, plays on non-reel
-  # media, etc., retired in 2024–2025) are intentionally absent.
+  # Whitelist of insight metric names the Instagram Graph API (v21+)
+  # returns for each media kind. Names that Meta retired during the 2024
+  # and 2025 schema cleanups — `impressions`, `engagement`,
+  # `video_views` — are intentionally absent. `plays` is still supported
+  # for feed videos and reels in v21+ and is included accordingly.
   #
   # Consumed by the Rails ingestion layer in phase 5b.
   module Metrics

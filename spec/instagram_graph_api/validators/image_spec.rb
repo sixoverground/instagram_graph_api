@@ -48,6 +48,23 @@ RSpec.describe InstagramGraphAPI::Validators::Image do
       expect(described_class.validate('https://cdn.example.com/photo', format: 'jpg')).to be(true)
     end
 
+    it 'coerces numeric strings (e.g. JSON params)' do
+      expect(described_class.validate(
+        'https://cdn.example.com/photo.jpg',
+        size_bytes:   '4194304',
+        aspect_ratio: '1.0'
+      )).to be(true)
+    end
+
+    it 'collects (not raises) when size/aspect arrive as un-coercible strings' do
+      expect {
+        described_class.validate('https://cdn.example.com/photo.jpg', size_bytes: 'big', aspect_ratio: 'wide')
+      }.to raise_error(InstagramGraphAPI::ValidationError) do |err|
+        expect(err.errors).to include(a_string_matching(/size_bytes must be an integer/))
+        expect(err.errors).to include(a_string_matching(/aspect_ratio must be a number/))
+      end
+    end
+
     it 'collects multiple errors into one ValidationError' do
       expect {
         described_class.validate('not-a-url', size_bytes: 10 * 1024 * 1024, aspect_ratio: 0.1)

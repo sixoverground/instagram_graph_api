@@ -20,8 +20,14 @@ RSpec.describe InstagramGraphAPI::Client::Publish do
       expect(result.id).to eq('18000000000000001')
     end
 
-    it 'drops nil params' do
-      stub = stub_graph_post("#{ig_user_id}/media", response_fixture: 'publish/create_container.json')
+    it 'drops nil params (caption is not encoded in the request body)' do
+      stub = stub_request(:post, "#{InstagramGraphAPI.api_url}/#{ig_user_id}/media")
+             .with { |req| !req.body.to_s.include?('caption') }
+             .to_return(
+               status: 200,
+               body: fixture('publish/create_container.json'),
+               headers: { 'Content-Type' => 'application/json' }
+             )
       client.create_media_container(ig_user_id: ig_user_id, image_url: 'https://cdn.example.com/img.jpg', caption: nil)
       expect(stub).to have_been_requested
     end

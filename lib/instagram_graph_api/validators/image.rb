@@ -24,12 +24,14 @@ module InstagramGraphAPI
           errors << "image must be JPEG (got #{inferred_format})"
         end
 
-        if size_bytes && size_bytes > MAX_SIZE_BYTES
-          errors << "image must be <= #{MAX_SIZE_BYTES} bytes (got #{size_bytes})"
+        coerced_size = coerce_integer(size_bytes, label: 'size_bytes', errors: errors)
+        if coerced_size && coerced_size > MAX_SIZE_BYTES
+          errors << "image must be <= #{MAX_SIZE_BYTES} bytes (got #{coerced_size})"
         end
 
-        if aspect_ratio && (aspect_ratio < MIN_ASPECT_RATIO || aspect_ratio > MAX_ASPECT_RATIO)
-          errors << "image aspect ratio must be between #{MIN_ASPECT_RATIO} and #{MAX_ASPECT_RATIO} (got #{aspect_ratio})"
+        coerced_ratio = coerce_float(aspect_ratio, label: 'aspect_ratio', errors: errors)
+        if coerced_ratio && (coerced_ratio < MIN_ASPECT_RATIO || coerced_ratio > MAX_ASPECT_RATIO)
+          errors << "image aspect ratio must be between #{MIN_ASPECT_RATIO} and #{MAX_ASPECT_RATIO} (got #{coerced_ratio})"
         end
 
         return true if errors.empty?
@@ -42,6 +44,24 @@ module InstagramGraphAPI
 
         ext = File.extname(url.split('?').first.to_s).delete('.').downcase
         ext.empty? ? nil : ext
+      end
+
+      def self.coerce_integer(value, label:, errors:)
+        return nil if value.nil?
+
+        Integer(value)
+      rescue ArgumentError, TypeError
+        errors << "#{label} must be an integer (got #{value.inspect})"
+        nil
+      end
+
+      def self.coerce_float(value, label:, errors:)
+        return nil if value.nil?
+
+        Float(value)
+      rescue ArgumentError, TypeError
+        errors << "#{label} must be a number (got #{value.inspect})"
+        nil
       end
     end
   end

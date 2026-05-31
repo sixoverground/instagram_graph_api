@@ -24,9 +24,17 @@ RSpec.describe InstagramGraphAPI::Metrics do
 
     it 'excludes metrics deprecated in the 2024-2025 Graph schema' do
       all_metrics = described_class::MEDIA_INSIGHT_METRICS.values.flatten.uniq
-      expect(all_metrics).not_to include('impressions') # retired for non-reel media
+      expect(all_metrics).not_to include('impressions') # retired across all media kinds
       expect(all_metrics).not_to include('engagement')  # retired
       expect(all_metrics).not_to include('video_views') # renamed → `views`/`plays`
+    end
+
+    it 'keeps `plays` on the kinds where Graph v21 still supports it' do
+      expect(described_class::MEDIA_INSIGHT_METRICS[:video]).to include('plays')
+      expect(described_class::MEDIA_INSIGHT_METRICS[:reel]).to include('plays')
+      %i[image story carousel].each do |kind|
+        expect(described_class::MEDIA_INSIGHT_METRICS[kind]).not_to include('plays')
+      end
     end
   end
 

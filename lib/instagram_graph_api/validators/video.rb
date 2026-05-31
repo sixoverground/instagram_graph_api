@@ -40,12 +40,14 @@ module InstagramGraphAPI
           errors << "audio codec must be AAC (got #{audio_codec})"
         end
 
-        if size_bytes && size_bytes > MAX_SIZE_BYTES
-          errors << "#{limits[:label]} must be <= #{MAX_SIZE_BYTES} bytes (got #{size_bytes})"
+        coerced_size = coerce_number(size_bytes, label: 'size_bytes', errors: errors, kind: :integer)
+        if coerced_size && coerced_size > MAX_SIZE_BYTES
+          errors << "#{limits[:label]} must be <= #{MAX_SIZE_BYTES} bytes (got #{coerced_size})"
         end
 
-        if duration_seconds && duration_seconds > limits[:max_duration_seconds]
-          errors << "#{limits[:label]} must be <= #{limits[:max_duration_seconds]}s (got #{duration_seconds})"
+        coerced_duration = coerce_number(duration_seconds, label: 'duration_seconds', errors: errors, kind: :float)
+        if coerced_duration && coerced_duration > limits[:max_duration_seconds]
+          errors << "#{limits[:label]} must be <= #{limits[:max_duration_seconds]}s (got #{coerced_duration})"
         end
 
         return true if errors.empty?
@@ -58,6 +60,15 @@ module InstagramGraphAPI
 
         ext = File.extname(url.split('?').first.to_s).delete('.').downcase
         ext.empty? ? nil : ext
+      end
+
+      def self.coerce_number(value, label:, errors:, kind:)
+        return nil if value.nil?
+
+        kind == :integer ? Integer(value) : Float(value)
+      rescue ArgumentError, TypeError
+        errors << "#{label} must be a number (got #{value.inspect})"
+        nil
       end
     end
   end

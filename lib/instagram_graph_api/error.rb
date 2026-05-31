@@ -18,9 +18,9 @@ module InstagramGraphAPI
   class NotFound            < Error; end
 
   class TooManyRequests < Error
-    # Seconds the caller should wait before retrying. Reads the standard
-    # `Retry-After` header first; falls back to Meta's
-    # `x-business-use-case-usage` window when present.
+    # Seconds the caller should wait before retrying, parsed from the
+    # standard `Retry-After` response header. Returns nil when the
+    # header is missing or non-numeric.
     def retry_after
       raw = headers['retry-after'] || headers['Retry-After']
       Integer(raw) if raw

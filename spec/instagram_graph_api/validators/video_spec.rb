@@ -55,6 +55,24 @@ RSpec.describe InstagramGraphAPI::Validators::Video do
       }.to raise_error(InstagramGraphAPI::ValidationError, /<= 60s/)
     end
 
+    it 'coerces numeric strings (e.g. JSON params)' do
+      expect(described_class.validate(
+        'https://cdn.example.com/reel.mp4',
+        kind:             :reel,
+        size_bytes:       '41943040',
+        duration_seconds: '30.5'
+      )).to be(true)
+    end
+
+    it 'collects (not raises) when size/duration arrive as un-coercible strings' do
+      expect {
+        described_class.validate('https://cdn.example.com/reel.mp4', kind: :reel, size_bytes: 'big', duration_seconds: 'long')
+      }.to raise_error(InstagramGraphAPI::ValidationError) do |err|
+        expect(err.errors).to include(a_string_matching(/size_bytes must be a number/))
+        expect(err.errors).to include(a_string_matching(/duration_seconds must be a number/))
+      end
+    end
+
     it 'rejects story videos longer than 60s' do
       expect {
         described_class.validate('https://cdn.example.com/s.mp4', kind: :story, duration_seconds: 90)
