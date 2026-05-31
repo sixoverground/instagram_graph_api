@@ -11,19 +11,20 @@ module InstagramGraphAPI
 
       payload = parse_body(env[:body])
       message = extract_message(payload, status)
+      headers = normalize_headers(env[:response_headers])
 
       case status
-      when 400 then raise InstagramGraphAPI::BadRequest.new(message, http_status: status, payload: payload)
-      when 401 then raise InstagramGraphAPI::Unauthorized.new(message, http_status: status, payload: payload)
-      when 403 then raise InstagramGraphAPI::Forbidden.new(message, http_status: status, payload: payload)
-      when 404 then raise InstagramGraphAPI::NotFound.new(message, http_status: status, payload: payload)
-      when 429 then raise InstagramGraphAPI::TooManyRequests.new(message, http_status: status, payload: payload)
-      when 500 then raise InstagramGraphAPI::InternalServerError.new(message, http_status: status, payload: payload)
-      when 502 then raise InstagramGraphAPI::BadGateway.new(message, http_status: status, payload: payload)
-      when 503 then raise InstagramGraphAPI::ServiceUnavailable.new(message, http_status: status, payload: payload)
-      when 504 then raise InstagramGraphAPI::GatewayTimeout.new(message, http_status: status, payload: payload)
+      when 400 then raise InstagramGraphAPI::BadRequest.new(message, http_status: status, payload: payload, headers: headers)
+      when 401 then raise InstagramGraphAPI::Unauthorized.new(message, http_status: status, payload: payload, headers: headers)
+      when 403 then raise InstagramGraphAPI::Forbidden.new(message, http_status: status, payload: payload, headers: headers)
+      when 404 then raise InstagramGraphAPI::NotFound.new(message, http_status: status, payload: payload, headers: headers)
+      when 429 then raise InstagramGraphAPI::TooManyRequests.new(message, http_status: status, payload: payload, headers: headers)
+      when 500 then raise InstagramGraphAPI::InternalServerError.new(message, http_status: status, payload: payload, headers: headers)
+      when 502 then raise InstagramGraphAPI::BadGateway.new(message, http_status: status, payload: payload, headers: headers)
+      when 503 then raise InstagramGraphAPI::ServiceUnavailable.new(message, http_status: status, payload: payload, headers: headers)
+      when 504 then raise InstagramGraphAPI::GatewayTimeout.new(message, http_status: status, payload: payload, headers: headers)
       else
-        raise InstagramGraphAPI::Error.new(message, http_status: status, payload: payload)
+        raise InstagramGraphAPI::Error.new(message, http_status: status, payload: payload, headers: headers)
       end
     end
 
@@ -44,6 +45,12 @@ module InstagramGraphAPI
 
       [err['message'], err['code'] && "code=#{err['code']}", err['type'] && "type=#{err['type']}"]
         .compact.join(' ')
+    end
+
+    def normalize_headers(raw)
+      return {} unless raw
+
+      raw.each_with_object({}) { |(k, v), acc| acc[k.to_s.downcase] = v }
     end
   end
 end

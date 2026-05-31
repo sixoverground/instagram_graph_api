@@ -1,0 +1,52 @@
+{
+  "data": [
+    {
+      "name": "reach",
+      "period": "lifetime",
+      "values": [{ "value": 18432 }],
+      "title": "Accounts reached",
+      "description": "Number of accounts that have seen this media at least once.",
+      "id": "17841405822304914/insights/reach/lifetime"
+    },
+    {
+      "name": "likes",
+      "period": "lifetime",
+      "values": [{ "value": 542 }],
+      "title": "Likes",
+      "description": "Number of likes on this media.",
+      "id": "17841405822304914/insights/likes/lifetime"
+    },
+    {
+      "name": "comments",
+      "period": "lifetime",
+      "values": [{ "value": 33 }],
+      "title": "Comments",
+      "description": "Number of comments on this media.",
+      "id": "17841405822304914/insights/comments/lifetime"
+    },
+    {
+      "name": "shares",
+      "period": "lifetime",
+      "values": [{ "value": 12 }],
+      "title": "Shares",
+      "description": "Number of shares of this media.",
+      "id": "17841405822304914/insights/shares/lifetime"
+    },
+    {
+      "name": "saved",
+      "period": "lifetime",
+      "values": [{ "value": 8 }],
+      "title": "Saves",
+      "description": "Number of saves on this media.",
+      "id": "17841405822304914/insights/saved/lifetime"
+    },
+    {
+      "name": "total_interactions",
+      "period": "lifetime",
+      "values": [{ "value": 595 }],
+      "title": "Total interactions",
+      "description": "Sum of all engagement signals on this media.",
+      "id": "17841405822304914/insights/total_interactions/lifetime"
+    }
+  ]
+}

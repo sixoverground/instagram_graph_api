@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe InstagramGraphAPI do
   it 'has a version number' do
-    expect(InstagramGraphAPI::VERSION).to eq('1.0.0')
+    expect(InstagramGraphAPI::VERSION).to eq('1.1.0')
   end
 
   describe '.client' do
