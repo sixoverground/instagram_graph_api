@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "id": "17900000000000201",
+      "media_type": "IMAGE",
+      "media_url": "https://scontent.cdninstagram.com/v/t51.29350-15/story_img1.jpg",
+      "permalink": "https://www.instagram.com/stories/snoopdog/17900000000000201/",
+      "timestamp": "2026-05-31T08:00:00+0000"
+    },
+    {
+      "id": "17900000000000202",
+      "media_type": "VIDEO",
+      "media_url": "https://scontent.cdninstagram.com/v/t51.29350-15/story_vid1.mp4",
+      "thumbnail_url": "https://scontent.cdninstagram.com/v/t51.29350-15/story_vid1_thumb.jpg",
+      "permalink": "https://www.instagram.com/stories/snoopdog/17900000000000202/",
+      "timestamp": "2026-05-31T10:30:00+0000"
+    }
+  ]
+}

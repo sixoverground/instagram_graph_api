@@ -3,6 +3,10 @@
 require 'instagram_graph_api/version'
 require 'instagram_graph_api/configuration'
 require 'instagram_graph_api/error'
+require 'instagram_graph_api/metrics'
+require 'instagram_graph_api/validators/image'
+require 'instagram_graph_api/validators/video'
+require 'instagram_graph_api/validators/carousel'
 require 'instagram_graph_api/api'
 require 'instagram_graph_api/client'
 

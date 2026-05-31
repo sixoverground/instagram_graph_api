@@ -1,0 +1,22 @@
+{
+  "data": [
+    {
+      "id": "17841405822304930",
+      "media_type": "IMAGE",
+      "permalink": "https://www.instagram.com/p/Czx1/",
+      "timestamp": "2026-05-31T11:00:00+0000",
+      "caption": "Top post for #california",
+      "like_count": 18211,
+      "comments_count": 412
+    },
+    {
+      "id": "17841405822304931",
+      "media_type": "REELS",
+      "permalink": "https://www.instagram.com/p/Czx2/",
+      "timestamp": "2026-05-30T14:00:00+0000",
+      "caption": "Reel for #california",
+      "like_count": 9821,
+      "comments_count": 250
+    }
+  ]
+}

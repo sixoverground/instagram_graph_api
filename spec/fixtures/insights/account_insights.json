@@ -1,0 +1,37 @@
+{
+  "data": [
+    {
+      "name": "views",
+      "period": "day",
+      "values": [
+        { "value": 14201, "end_time": "2026-05-30T07:00:00+0000" },
+        { "value": 15044, "end_time": "2026-05-31T07:00:00+0000" }
+      ],
+      "title": "Views",
+      "description": "Total times your content was on screen.",
+      "id": "17841400000000000/insights/views/day"
+    },
+    {
+      "name": "reach",
+      "period": "day",
+      "values": [
+        { "value": 9211, "end_time": "2026-05-30T07:00:00+0000" },
+        { "value": 9844, "end_time": "2026-05-31T07:00:00+0000" }
+      ],
+      "title": "Reach",
+      "description": "Accounts reached.",
+      "id": "17841400000000000/insights/reach/day"
+    },
+    {
+      "name": "follower_count",
+      "period": "day",
+      "values": [
+        { "value": 41, "end_time": "2026-05-30T07:00:00+0000" },
+        { "value": 58, "end_time": "2026-05-31T07:00:00+0000" }
+      ],
+      "title": "New followers",
+      "description": "Net new follower count.",
+      "id": "17841400000000000/insights/follower_count/day"
+    }
+  ]
+}

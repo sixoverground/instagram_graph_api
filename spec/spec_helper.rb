@@ -29,14 +29,27 @@ def fixture(name)
   File.read(File.join(fixture_path, name), encoding: 'UTF-8')
 end
 
-def stub_graph_get(path, response_fixture:, status: 200, query: nil)
+def stub_graph_get(path, response_fixture: nil, response_body: nil, status: 200, query: nil, response_headers: {})
   url = "#{InstagramGraphAPI.api_url}/#{path}"
   matcher = query ? hash_including(query) : hash_including({})
+  body = response_body || (response_fixture ? fixture(response_fixture) : '{}')
   stub_request(:get, url)
     .with(query: matcher)
     .to_return(
       status: status,
-      body: fixture(response_fixture),
-      headers: { 'Content-Type' => 'application/json' }
+      body: body,
+      headers: { 'Content-Type' => 'application/json' }.merge(response_headers)
     )
+end
+
+def stub_graph_post(path, response_fixture: nil, response_body: nil, status: 200, body_includes: nil, response_headers: {})
+  url = "#{InstagramGraphAPI.api_url}/#{path}"
+  body = response_body || (response_fixture ? fixture(response_fixture) : '{}')
+  req = stub_request(:post, url)
+  req = req.with(body: hash_including(body_includes)) if body_includes
+  req.to_return(
+    status: status,
+    body: body,
+    headers: { 'Content-Type' => 'application/json' }.merge(response_headers)
+  )
 end
