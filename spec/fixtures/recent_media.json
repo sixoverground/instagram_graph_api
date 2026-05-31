@@ -1,0 +1,39 @@
+{
+  "data": [
+    {
+      "id": "17841405822304914",
+      "caption": "New drop",
+      "media_type": "IMAGE",
+      "media_url": "https://scontent.cdninstagram.com/v/t51.29350-15/img1.jpg",
+      "permalink": "https://www.instagram.com/p/Cabc111/",
+      "timestamp": "2026-03-12T17:23:45+0000",
+      "username": "snoopdog"
+    },
+    {
+      "id": "17841405822304915",
+      "caption": "Tour announcement",
+      "media_type": "VIDEO",
+      "media_url": "https://scontent.cdninstagram.com/v/t51.29350-15/vid1.mp4",
+      "thumbnail_url": "https://scontent.cdninstagram.com/v/t51.29350-15/vid1_thumb.jpg",
+      "permalink": "https://www.instagram.com/p/Cabc112/",
+      "timestamp": "2026-03-11T12:00:00+0000",
+      "username": "snoopdog"
+    },
+    {
+      "id": "17841405822304916",
+      "caption": "Behind the scenes",
+      "media_type": "CAROUSEL_ALBUM",
+      "media_url": "https://scontent.cdninstagram.com/v/t51.29350-15/carousel1.jpg",
+      "permalink": "https://www.instagram.com/p/Cabc113/",
+      "timestamp": "2026-03-10T09:15:33+0000",
+      "username": "snoopdog"
+    }
+  ],
+  "paging": {
+    "cursors": {
+      "before": "QVFIUm9Ka1NhTUF2Ym1DSGFsZAxxxxxx",
+      "after": "QVFIUm9Ka1NhTUF2Ym1DSGFsZA"
+    },
+    "next": "https://graph.instagram.com/me/media?access_token=...&after=QVFIUm9Ka1NhTUF2Ym1DSGFsZA"
+  }
+}

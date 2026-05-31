@@ -1,0 +1,8 @@
+{
+  "error": {
+    "message": "Unsupported get request. Object with ID 'bogus_id' does not exist, cannot be loaded due to missing permissions, or does not support this operation.",
+    "type": "GraphMethodException",
+    "code": 100,
+    "fbtrace_id": "ABCD1239"
+  }
+}
