@@ -43,12 +43,12 @@ fresh.expires_in      # => 5183944
 
 | Method | Signature | Notes |
 | --- | --- | --- |
-| `Client#user` | `(id = 'me', fields:)` → `Hashie::Mash` | `id` defaults to `me`; pass an IG user id to look up another user (limited by Graph permissions). |
-| `Client#me` | `(fields:)` → `Hashie::Mash` | Alias for `user('me', fields:)`. |
-| `Client#user_recent_media` | `(limit:, after:, fields:)` → `Hashie::Mash` with `.data` + `.paging` | Paged. |
-| `Client#recent_media` | `(limit:, after:, fields:)` → `Hashie::Mash` | Alias for `user_recent_media`. |
-| `Client#media_item` | `(id, fields:)` → `Hashie::Mash` | Positional `id`. |
-| `Client#media` | `(id:, fields:)` → `Hashie::Mash` | Keyword `id:`. Alias for `media_item`. |
+| `Client#user` | `(id = 'me', fields: DEFAULT_USER_FIELDS)` → `Hashie::Mash` | `id` defaults to `me`; pass an IG user id to look up another user (limited by Graph permissions). |
+| `Client#me` | `(fields: DEFAULT_USER_FIELDS)` → `Hashie::Mash` | Alias for `user('me', fields:)`. |
+| `Client#user_recent_media` | `(limit: 25, after: nil, fields: DEFAULT_MEDIA_FIELDS)` → `Hashie::Mash` with `.data` + `.paging` | Paged. |
+| `Client#recent_media` | `(limit: 25, after: nil, fields: DEFAULT_MEDIA_FIELDS)` → `Hashie::Mash` | Alias for `user_recent_media`. |
+| `Client#media_item` | `(id, fields: DEFAULT_MEDIA_FIELDS)` → `Hashie::Mash` | Positional `id`. |
+| `Client#media` | `(id:, fields: DEFAULT_MEDIA_FIELDS)` → `Hashie::Mash` | Keyword `id:`. Alias for `media_item`. |
 | `Client#refresh_access_token` | `()` → `Hashie::Mash` with `.access_token` | Long-lived token refresh. |
 
 Errors raised on non-2xx responses:
