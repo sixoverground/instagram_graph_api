@@ -18,19 +18,20 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
+            const MARKER = '<!-- claude-reactive: copilot-review -->';
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.pull_request.number,
-              per_page: 10
+              per_page: 30
             });
-            const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
-            const recentClaude = comments.data.some(c =>
-              c.body.includes('@claude') &&
-              new Date(c.created_at).getTime() > twoHoursAgo
+            const thirtyMinAgo = Date.now() - 30 * 60 * 1000;
+            const recentSameType = comments.data.some(c =>
+              c.body.includes(MARKER) &&
+              new Date(c.created_at).getTime() > thirtyMinAgo
             );
-            if (recentClaude) {
-              console.log('Skipping — @claude was already tagged within the last 2 hours');
+            if (recentSameType) {
+              console.log('Skipping — copilot-review @claude tag fired within the last 30 minutes');
               return;
             }
 
@@ -38,7 +39,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.pull_request.number,
-              body: '@claude Address all review comments on this PR. For each comment, either fix the code or explain why no change is needed.'
+              body: `@claude Address all review comments on this PR. For each comment, either fix the code or explain why no change is needed.\n\n${MARKER}`
             });
 
   handle-ci-failure:
@@ -56,19 +57,20 @@ jobs:
             const pr = prs.find(p => p.head.ref.startsWith('claude/'));
             if (!pr) return;
 
+            const MARKER = '<!-- claude-reactive: check-suite-failure -->';
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: pr.number,
-              per_page: 10
+              per_page: 30
             });
-            const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
-            const recentClaude = comments.data.some(c =>
-              c.body.includes('@claude') &&
-              new Date(c.created_at).getTime() > twoHoursAgo
+            const thirtyMinAgo = Date.now() - 30 * 60 * 1000;
+            const recentSameType = comments.data.some(c =>
+              c.body.includes(MARKER) &&
+              new Date(c.created_at).getTime() > thirtyMinAgo
             );
-            if (recentClaude) {
-              console.log('Skipping — @claude was already tagged within the last 2 hours');
+            if (recentSameType) {
+              console.log('Skipping — check-suite-failure @claude tag fired within the last 30 minutes');
               return;
             }
 
@@ -76,7 +78,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: pr.number,
-              body: '@claude CI failed on this PR. Check the build/test logs, identify the failures, and push fixes.'
+              body: `@claude CI failed on this PR. Check the build/test logs, identify the failures, and push fixes.\n\n${MARKER}`
             });
 
   handle-status-failure:
@@ -105,19 +107,20 @@ jobs:
             );
             if (!pr) return;
 
+            const MARKER = '<!-- claude-reactive: status-failure -->';
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: pr.number,
-              per_page: 10
+              per_page: 30
             });
-            const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
-            const recentClaude = comments.data.some(c =>
-              c.body.includes('@claude') &&
-              new Date(c.created_at).getTime() > twoHoursAgo
+            const thirtyMinAgo = Date.now() - 30 * 60 * 1000;
+            const recentSameType = comments.data.some(c =>
+              c.body.includes(MARKER) &&
+              new Date(c.created_at).getTime() > thirtyMinAgo
             );
-            if (recentClaude) {
-              console.log('Skipping — @claude was already tagged within the last 2 hours');
+            if (recentSameType) {
+              console.log('Skipping — status-failure @claude tag fired within the last 30 minutes');
               return;
             }
 
@@ -131,5 +134,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: pr.number,
-              body: `@claude CI failed on this PR (\`${ctx}\` reported \`${context.payload.state}\`). Check the logs, identify the failure, and push fixes.${descLine}${linkLine}`
+              body: `@claude CI failed on this PR (\`${ctx}\` reported \`${context.payload.state}\`). Check the logs, identify the failure, and push fixes.${descLine}${linkLine}\n\n${MARKER}`
             });
