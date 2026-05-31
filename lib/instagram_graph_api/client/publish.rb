@@ -43,7 +43,7 @@ module InstagramGraphAPI
 
       # GET /{ig-container-id}?fields=status_code,status
       # Returns a `Hashie::Mash` with `.status_code` (one of
-      # `IN_PROGRESS`, `FINISHED`, `ERROR`, `EXPIRED`, `PUBLISHED`).
+      # `IN_PROGRESS`, `FINISHED`, `ERROR`, `EXPIRED`).
       def media_container_status(container_id:, fields: CONTAINER_STATUS_FIELDS)
         get(container_id.to_s, fields: fields)
       end

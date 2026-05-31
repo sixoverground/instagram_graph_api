@@ -25,4 +25,9 @@ RSpec.describe InstagramGraphAPI::RaiseHttpException do
       expect(err.retry_after).to be_nil
     end
   end
+
+  it 'returns nil from #retry_after when the header value cannot be coerced to an Integer' do
+    err = InstagramGraphAPI::TooManyRequests.new('rate limited', http_status: 429, headers: { 'retry-after' => [] })
+    expect(err.retry_after).to be_nil
+  end
 end

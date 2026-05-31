@@ -24,7 +24,7 @@ module InstagramGraphAPI
     def retry_after
       raw = headers['retry-after'] || headers['Retry-After']
       Integer(raw) if raw
-    rescue ArgumentError
+    rescue ArgumentError, TypeError
       nil
     end
   end
