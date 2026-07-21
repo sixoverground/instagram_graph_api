@@ -5,6 +5,12 @@ require 'json'
 
 module InstagramGraphAPI
   class RaiseHttpException < Faraday::Middleware
+    # Meta returns expired / invalid / revoked access-token errors as an
+    # OAuthException with code 190, frequently over HTTP 400 rather than 401.
+    # We surface those as Unauthorized so callers can rescue the correct class
+    # regardless of Meta's inconsistent status code.
+    OAUTH_ACCESS_TOKEN_ERROR_CODE = 190
+
     def on_complete(env)
       status = env[:status]
       return if status.between?(200, 299)
@@ -13,22 +19,33 @@ module InstagramGraphAPI
       message = extract_message(payload, status)
       headers = normalize_headers(env[:response_headers])
 
-      case status
-      when 400 then raise InstagramGraphAPI::BadRequest.new(message, http_status: status, payload: payload, headers: headers)
-      when 401 then raise InstagramGraphAPI::Unauthorized.new(message, http_status: status, payload: payload, headers: headers)
-      when 403 then raise InstagramGraphAPI::Forbidden.new(message, http_status: status, payload: payload, headers: headers)
-      when 404 then raise InstagramGraphAPI::NotFound.new(message, http_status: status, payload: payload, headers: headers)
-      when 429 then raise InstagramGraphAPI::TooManyRequests.new(message, http_status: status, payload: payload, headers: headers)
-      when 500 then raise InstagramGraphAPI::InternalServerError.new(message, http_status: status, payload: payload, headers: headers)
-      when 502 then raise InstagramGraphAPI::BadGateway.new(message, http_status: status, payload: payload, headers: headers)
-      when 503 then raise InstagramGraphAPI::ServiceUnavailable.new(message, http_status: status, payload: payload, headers: headers)
-      when 504 then raise InstagramGraphAPI::GatewayTimeout.new(message, http_status: status, payload: payload, headers: headers)
-      else
-        raise InstagramGraphAPI::Error.new(message, http_status: status, payload: payload, headers: headers)
-      end
+      raise exception_class(status, payload)
+        .new(message, http_status: status, payload: payload, headers: headers)
     end
 
     private
+
+    def exception_class(status, payload)
+      return InstagramGraphAPI::Unauthorized if access_token_error?(payload)
+
+      case status
+      when 400 then InstagramGraphAPI::BadRequest
+      when 401 then InstagramGraphAPI::Unauthorized
+      when 403 then InstagramGraphAPI::Forbidden
+      when 404 then InstagramGraphAPI::NotFound
+      when 429 then InstagramGraphAPI::TooManyRequests
+      when 500 then InstagramGraphAPI::InternalServerError
+      when 502 then InstagramGraphAPI::BadGateway
+      when 503 then InstagramGraphAPI::ServiceUnavailable
+      when 504 then InstagramGraphAPI::GatewayTimeout
+      else InstagramGraphAPI::Error
+      end
+    end
+
+    def access_token_error?(payload)
+      err = payload.is_a?(Hash) ? payload['error'] : nil
+      err.is_a?(Hash) && err['code'] == OAUTH_ACCESS_TOKEN_ERROR_CODE
+    end
 
     def parse_body(body)
       return body if body.is_a?(Hash)

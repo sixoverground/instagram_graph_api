@@ -10,6 +10,22 @@ module InstagramGraphAPI
       @payload     = payload
       @headers     = headers || {}
     end
+
+    # Meta error code (e.g. 190 = token expired/invalid, 100 = object missing).
+    # nil when the response carried no structured error body.
+    def code
+      error_hash['code']
+    end
+
+    def error_subcode
+      error_hash['error_subcode']
+    end
+
+    private
+
+    def error_hash
+      payload.is_a?(Hash) && payload['error'].is_a?(Hash) ? payload['error'] : {}
+    end
   end
 
   class BadRequest          < Error; end
