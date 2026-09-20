@@ -119,16 +119,22 @@ The metric whitelist lives in `InstagramGraphAPI::Metrics`:
 ```ruby
 InstagramGraphAPI::Metrics::MEDIA_INSIGHT_METRICS[:reel]
 # => ["reach", "likes", "comments", "shares", "saved", "total_interactions",
-#     "plays", "views", "ig_reels_avg_watch_time", "ig_reels_video_view_total_time"]
+#     "views", "ig_reels_avg_watch_time", "ig_reels_video_view_total_time"]
 
 InstagramGraphAPI::Metrics::ACCOUNT_INSIGHT_METRICS
 # => ["views", "profile_views", "follower_count", "accounts_engaged",
 #     "total_interactions", "reach", "likes", "comments", "shares", "saves"]
 ```
 
-Deprecated names (`impressions`, `engagement`, `video_views`) are
-intentionally absent — the Graph v21 schema renamed/retired them in
-2024–2025.
+Deprecated names (`impressions`, `engagement`, `video_views`, `plays`,
+`exits`) are intentionally absent — the Graph schema renamed or retired
+them between 2024 and 2026.
+
+Keep the list narrow. The API validates the whole `metric` list before it
+reads any of it, so a single retired name answers 400 for the request and
+costs every metric for that media kind. When one is rejected the error
+names every value the API will accept, which is the list to widen
+against.
 
 ### Comments + replies
 

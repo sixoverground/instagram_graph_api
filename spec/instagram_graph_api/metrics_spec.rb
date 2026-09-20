@@ -19,22 +19,30 @@ RSpec.describe InstagramGraphAPI::Metrics do
     end
 
     it 'uses story-specific metrics' do
-      expect(described_class::MEDIA_INSIGHT_METRICS[:story]).to match_array(%w[reach replies exits views])
+      expect(described_class::MEDIA_INSIGHT_METRICS[:story]).to match_array(%w[reach replies views])
     end
 
     it 'excludes metrics deprecated in the 2024-2025 Graph schema' do
       all_metrics = described_class::MEDIA_INSIGHT_METRICS.values.flatten.uniq
       expect(all_metrics).not_to include('impressions') # retired across all media kinds
       expect(all_metrics).not_to include('engagement')  # retired
-      expect(all_metrics).not_to include('video_views') # renamed → `views`/`plays`
+      expect(all_metrics).not_to include('video_views') # renamed → `views`
     end
 
-    it 'keeps `plays` on the kinds where Graph v21 still supports it' do
-      expect(described_class::MEDIA_INSIGHT_METRICS[:video]).to include('plays')
-      expect(described_class::MEDIA_INSIGHT_METRICS[:reel]).to include('plays')
-      %i[image story carousel].each do |kind|
-        expect(described_class::MEDIA_INSIGHT_METRICS[kind]).not_to include('plays')
-      end
+    # A retired name is not a missing column, it is a 400 for the whole
+    # request. While `plays` sat in the video list, every feed video and
+    # every reel published through the app recorded no insights at all,
+    # and the ingestion job logged the failure and moved on. `exits` was
+    # doing the same to stories.
+    it 'asks for no metric the API has retired out from under it' do
+      all_metrics = described_class::MEDIA_INSIGHT_METRICS.values.flatten.uniq
+      expect(all_metrics).not_to include('plays')
+      expect(all_metrics).not_to include('exits')
+    end
+
+    it 'counts video plays as `views`, the name that replaced them' do
+      expect(described_class::MEDIA_INSIGHT_METRICS[:video]).to include('views')
+      expect(described_class::MEDIA_INSIGHT_METRICS[:reel]).to include('views')
     end
   end
 
